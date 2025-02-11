@@ -36,7 +36,7 @@
 |---|---|---|---|-------|------|-------|
 |일정 등록|POST|/api/v1/schedules|요청 body : CreateSchduleRequestDto|ScheduleResponseDto|201 : 정상등록|400 : DTO 요청,문제 401 : 로그인이 안됨|
 |일정 조회|GET|/api/v1/schedules/{id}|요청 PathVariable : schedule_id|ScheduleResponseDto|200 : 정상조회|404 : 데이터가 없음|
-|일정 목록 조회|GET|/api/v1/schedules|-|List<ScheduleResponseDto>|200 : 정상조회|-|
+|일정 목록 조회|GET|/api/v1/schedules|-|List(ScheduleResponseDto)|200 : 정상조회|-|
 |일정 일괄 수정|PUT|/api/v1/schedules/{id}|요청 PathVariable : schedule_id, 요청 body : updateScheduleRequestDto|ScheduleResponseDto|200 : 정상수정|400 : DTO 요청 문제, 401 : 로그인이 안됨, 404 : 데이터가 없음|
 |일정 부분 수정|PATCH|/api/v1/schedules/{id}|요청 PathVariable : schedule_id, 요청 body : updateScheduleRequestDto|ScheduleResponseDto|200 : 정상수정|400 : DTO 요청 문제, 401 : 로그인이 안됨, 404 : 데이터가 없음|
 |일정 삭제|DELETE|/api/schedules/{scheduleId}|요청 PathVariable|-|200 : 정상삭제|401 : 로그인이 안됨,404 : 데이터가 없음|
