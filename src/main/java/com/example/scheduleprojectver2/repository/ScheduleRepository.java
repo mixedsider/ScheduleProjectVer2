@@ -1,0 +1,14 @@
+package com.example.scheduleprojectver2.repository;
+
+import com.example.scheduleprojectver2.entity.ScheduleEntity;
+import com.example.scheduleprojectver2.exception.NotFoundException;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ScheduleRepository extends JpaRepository<ScheduleEntity, Long> {
+
+    default ScheduleEntity findByIdOrElseThrow(Long id) {
+        return findById(id).orElseThrow(
+                () -> new NotFoundException("없는 데이터입니다.")
+        );
+    }
+}
