@@ -3,12 +3,14 @@ package com.example.scheduleprojectver2.service;
 import com.example.scheduleprojectver2.dto.users.UserResponseDto;
 import com.example.scheduleprojectver2.entity.UserEntity;
 import com.example.scheduleprojectver2.exception.ErrorDtoException;
+import com.example.scheduleprojectver2.exception.LoginException;
 import com.example.scheduleprojectver2.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,13 +18,24 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserResponseDto save(String username, String email) {
+    public UserResponseDto save(String username, String password, String email) {
 
-        UserEntity user = new UserEntity(username, email);
+        UserEntity user = new UserEntity(username, password, email);
 
         UserEntity savedUser = userRepository.save(user);
 
         return savedUser.toDto();
+    }
+
+    public UserResponseDto login(String username, String password) {
+
+        Optional<UserEntity> user = userRepository.findByUsernameAndPassword(username, password);
+
+        if( user.isEmpty() ) {
+            throw new LoginException();
+        }
+
+        return user.get().toDto();
     }
 
     public UserResponseDto findById(Long id) {

@@ -19,16 +19,20 @@ public class UserEntity extends BaseEntity{
     @Column(nullable = false)
     private String username;
 
+    @Column(nullable = false)
+    private String password;
+
     @Column(nullable = false, unique = true)
     private String email;
 
-    public UserEntity(String username, String email) {
+    public UserEntity(String username, String password, String email) {
         this.username = username;
+        this.password = password;
         this.email = email;
     }
 
     public UserResponseDto toDto() {
-        return new UserResponseDto(this.id, this.username, this.email);
+        return new UserResponseDto(this.id, this.username);
     }
 
     public void updateUsername(String username) {
@@ -37,5 +41,9 @@ public class UserEntity extends BaseEntity{
 
     public void updateEmail(String email) {
         this.email = email;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
     }
 }

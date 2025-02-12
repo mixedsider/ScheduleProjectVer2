@@ -1,10 +1,11 @@
 package com.example.scheduleprojectver2.controller;
 
-import com.example.scheduleprojectver2.dto.users.PatchUserRequestDto;
-import com.example.scheduleprojectver2.dto.users.SignUpUserRequestDto;
-import com.example.scheduleprojectver2.dto.users.UpdateUserRequestDto;
-import com.example.scheduleprojectver2.dto.users.UserResponseDto;
+import com.example.scheduleprojectver2.dto.users.*;
+import com.example.scheduleprojectver2.exception.LoginException;
+import com.example.scheduleprojectver2.filter.Const;
 import com.example.scheduleprojectver2.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -23,9 +24,23 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<UserResponseDto> signUp(@Validated @RequestBody SignUpUserRequestDto requestDto) {
-        UserResponseDto responseDto = userService.save(requestDto.getUsername(), requestDto.getEmail());
+        UserResponseDto responseDto = userService.save(requestDto.getUsername(), requestDto.getPassword(), requestDto.getEmail());
 
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserResponseDto> login(
+            @Validated @RequestBody LoginUserRequestDto requestDto,
+            HttpServletRequest httpServletRequest
+    ) {
+        UserResponseDto responseDto = userService.login(requestDto.getUsername(), requestDto.getPassword());
+
+        HttpSession session = httpServletRequest.getSession();
+
+        session.setAttribute(Const.LOGIN_USER, responseDto);
+
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
