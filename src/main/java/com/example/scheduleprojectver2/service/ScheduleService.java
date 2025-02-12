@@ -1,7 +1,6 @@
 package com.example.scheduleprojectver2.service;
 
 import com.example.scheduleprojectver2.dto.schedules.ScheduleResponseDto;
-import com.example.scheduleprojectver2.dto.users.UserResponseDto;
 import com.example.scheduleprojectver2.entity.ScheduleEntity;
 import com.example.scheduleprojectver2.entity.UserEntity;
 import com.example.scheduleprojectver2.exception.ErrorDtoException;
@@ -22,7 +21,7 @@ public class ScheduleService {
 
     public ScheduleResponseDto save(String username, String title, String todo) {
         // todo : 유저 검사하는 로직
-        UserEntity findUser = userService.findByName(username);
+        UserEntity findUser = userService.findByUsername(username);
 
         ScheduleEntity schedule = new ScheduleEntity(title, todo);
         schedule.setUser(findUser);
