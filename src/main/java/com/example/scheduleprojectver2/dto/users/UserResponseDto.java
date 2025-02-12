@@ -11,12 +11,10 @@ public class UserResponseDto {
 
     private String username;
 
-    private String email;
 
     @Builder
-    public UserResponseDto(Long id, String username, String email) {
+    public UserResponseDto(Long id, String username) {
         this.id = id;
         this.username = username;
-        this.email = email;
     }
 }
