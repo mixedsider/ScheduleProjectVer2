@@ -38,6 +38,10 @@ public class ScheduleService {
         return findSchedule.toDto();
     }
 
+    public ScheduleEntity findByIdToEntity(Long id) {
+        return scheduleRepository.findByIdOrElseThrow(id);
+    }
+
     public List<ScheduleResponseDto> findAll() {
         return scheduleRepository.findAll()
                 .stream()
