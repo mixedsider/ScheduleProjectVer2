@@ -51,6 +51,13 @@ public class UserService {
         return findUser.toDto();
     }
 
+    public UserEntity findByIdToEntity(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(
+                        () -> new NotFoundException("없는 유저입니다.")
+                );
+    }
+
     public UserEntity findByUsername(String username) {
         Optional<UserEntity> user = userRepository.findByUsername(username);
 
@@ -101,4 +108,9 @@ public class UserService {
 
         userRepository.delete(deleteUser);
     }
+
+    public boolean existById(Long id) {
+        return userRepository.existsById(id);
+    }
+
 }
