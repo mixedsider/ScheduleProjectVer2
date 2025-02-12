@@ -4,6 +4,8 @@ import com.example.scheduleprojectver2.entity.UserEntity;
 import com.example.scheduleprojectver2.exception.NotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     default UserEntity findByIdOrElseThrow(Long id) {
@@ -13,4 +15,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     }
 
     UserEntity findByUsername(String username);
+
+    Optional<UserEntity> findByUsernameAndPassword(String username, String password);
 }
