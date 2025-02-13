@@ -3,6 +3,7 @@ package com.example.scheduleprojectver2.service;
 
 import com.example.scheduleprojectver2.config.PasswordEncoder;
 
+import com.example.scheduleprojectver2.dto.users.LoginAuthDto;
 import com.example.scheduleprojectver2.dto.users.UserResponseDto;
 import com.example.scheduleprojectver2.entity.UserEntity;
 import com.example.scheduleprojectver2.exception.ErrorDtoException;
@@ -38,17 +39,17 @@ public class UserService {
         return savedUser.toDto();
     }
 
-    public UserResponseDto login(String username, String password) {
+    public LoginAuthDto login(String username, String password) {
 
 
-        UserEntity user1 = findByUsername(username);
+        UserEntity user = findByUsername(username);
 
 
-        if( !passwordEncoder.matches(password, user1.getPassword()) ) {
+        if( !passwordEncoder.matches(password, user.getPassword()) ) {
             throw new LoginException();
         }
 
-        return user1.toDto();
+        return new LoginAuthDto(user.getId(), username);
 
     }
 
@@ -116,5 +117,11 @@ public class UserService {
         UserEntity deleteUser = userRepository.findByIdOrElseThrow(id);
 
         userRepository.delete(deleteUser);
+    }
+
+    public void checkUserId(Long id) {
+        if( !userRepository.existsById(id) ) {
+            throw new NotFoundException("없는 유저입니다.");
+        }
     }
 }

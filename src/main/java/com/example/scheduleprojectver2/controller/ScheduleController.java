@@ -1,9 +1,8 @@
 package com.example.scheduleprojectver2.controller;
 
-import com.example.scheduleprojectver2.dto.schedules.CreateScheduleRequestDto;
-import com.example.scheduleprojectver2.dto.schedules.PatchScheduleRequestDto;
-import com.example.scheduleprojectver2.dto.schedules.ScheduleResponseDto;
-import com.example.scheduleprojectver2.dto.schedules.UpdateScheduleRequestDto;
+import com.example.scheduleprojectver2.dto.schedules.*;
+import com.example.scheduleprojectver2.dto.users.LoginAuthDto;
+import com.example.scheduleprojectver2.filter.Const;
 import com.example.scheduleprojectver2.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 
@@ -22,10 +21,13 @@ public class ScheduleController {
 
     // 일정 저장
     @PostMapping("")
-    public ResponseEntity<ScheduleResponseDto> save(@Validated @RequestBody CreateScheduleRequestDto requestDto) {
+    public ResponseEntity<ScheduleResponseDto> save(
+            @Validated @RequestBody CreateScheduleRequestDto requestDto,
+            @SessionAttribute(Const.LOGIN_USER) LoginAuthDto userDto
+            ) {
 
         ScheduleResponseDto responseDto = scheduleService.save(
-                requestDto.getUsername(),
+                userDto.getUsername(),
                 requestDto.getTitle(),
                 requestDto.getTodo()
         );
@@ -42,20 +44,20 @@ public class ScheduleController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    // 일정 다건 조회
-    // todo : pagination 추가
+
     //    @GetMapping("")
     //    public ResponseEntity<List<ScheduleResponseDto>> findAll() {
     //
     //        return new ResponseEntity<>(scheduleService.findAll(), HttpStatus.OK);
     //    }
 
+    // 일정 다건 조회
     @GetMapping("")
-    public ResponseEntity<Page<ScheduleResponseDto>> findAll(
+    public ResponseEntity<Page<SchedulePageReponseDto>> findAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        Page<ScheduleResponseDto> responseDtos = scheduleService.findAll(page, size);
+        Page<SchedulePageReponseDto> responseDtos = scheduleService.findAll(page, size);
         return new ResponseEntity<>(responseDtos, HttpStatus.OK);
     }
 
@@ -63,10 +65,11 @@ public class ScheduleController {
     @PutMapping("/{id}")
     public ResponseEntity<ScheduleResponseDto> update(
             @PathVariable Long id,
-            @Validated @RequestBody UpdateScheduleRequestDto requestDto
+            @Validated @RequestBody UpdateScheduleRequestDto requestDto,
+            @SessionAttribute(Const.LOGIN_USER) LoginAuthDto userDto
     ) {
 
-        ScheduleResponseDto responseDto = scheduleService.update(id, requestDto.getTitle(), requestDto.getTodo());
+        ScheduleResponseDto responseDto = scheduleService.update(id, userDto.getId() ,requestDto.getTitle(), requestDto.getTodo());
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -75,17 +78,21 @@ public class ScheduleController {
     @PatchMapping("/{id}")
     public ResponseEntity<ScheduleResponseDto> patch(
             @PathVariable Long id,
-            @RequestBody PatchScheduleRequestDto requestDto
+            @RequestBody PatchScheduleRequestDto requestDto,
+            @SessionAttribute(Const.LOGIN_USER) LoginAuthDto userDto
     ) {
-        ScheduleResponseDto responseDto = scheduleService.patch(id, requestDto.getTitle(), requestDto.getTodo());
+        ScheduleResponseDto responseDto = scheduleService.patch(id, userDto.getId(), requestDto.getTitle(), requestDto.getTodo());
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     // 일정 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        scheduleService.delete(id);
+    public ResponseEntity<Void> delete(
+            @PathVariable Long id,
+            @SessionAttribute(Const.LOGIN_USER) LoginAuthDto userDto
+    ) {
+        scheduleService.delete(id, userDto.getId());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
