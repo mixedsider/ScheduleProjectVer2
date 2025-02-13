@@ -36,17 +36,22 @@
 
 |기능|URL|request|response|COMMENT|정상응답|잘못된 응답|
 |---|---|---|---|-------|------|-------|
-|일정 등록|POST|/api/v1/schedules|요청 body : CreateSchduleRequestDto|ScheduleResponseDto|201 : 정상등록|400 : DTO 요청,문제 401 : 로그인이 안됨|
+|일정 등록|POST|/api/v1/schedules|요청 body : CreateSchduleRequestDto, SessionAttribute : LoginAuthDto|ScheduleResponseDto|201 : 정상등록|400 : DTO 요청,문제 401 : 로그인이 안됨|
 |일정 조회|GET|/api/v1/schedules/{id}|요청 PathVariable : schedule_id|ScheduleResponseDto|200 : 정상조회|404 : 데이터가 없음|
-|일정 목록 조회|GET|/api/v1/schedules|-|List(ScheduleResponseDto)|200 : 정상조회|-|
-|일정 일괄 수정|PUT|/api/v1/schedules/{id}|요청 PathVariable : schedule_id, 요청 body : updateScheduleRequestDto|ScheduleResponseDto|200 : 정상수정|400 : DTO 요청 문제, 401 : 로그인이 안됨, 404 : 데이터가 없음|
-|일정 부분 수정|PATCH|/api/v1/schedules/{id}|요청 PathVariable : schedule_id, 요청 body : updateScheduleRequestDto|ScheduleResponseDto|200 : 정상수정|400 : DTO 요청 문제, 401 : 로그인이 안됨, 404 : 데이터가 없음|
-|일정 삭제|DELETE|/api/schedules/{scheduleId}|요청 PathVariable|-|200 : 정상삭제|401 : 로그인이 안됨,404 : 데이터가 없음|
+|일정 목록 조회|GET|/api/v1/schedules|-|Page(SchedulePageReponseDto)|200 : 정상조회|-|
+|일정 일괄 수정|PUT|/api/v1/schedules/{id}|요청 PathVariable : schedule_id, 요청 body : updateScheduleRequestDto, SessionAttribute : LoginAuthDto|ScheduleResponseDto|200 : 정상수정|400 : DTO 요청 문제, 401 : 로그인이 안됨, 404 : 데이터가 없음|
+|일정 부분 수정|PATCH|/api/v1/schedules/{id}|요청 PathVariable : schedule_id, 요청 body : updateScheduleRequestDto, SessionAttribute : LoginAuthDto|ScheduleResponseDto|200 : 정상수정|400 : DTO 요청 문제, 401 : 로그인이 안됨, 404 : 데이터가 없음|
+|일정 삭제|DELETE|/api/schedules/{scheduleId}|요청 PathVariable, SessionAttribute : LoginAuthDto|-|200 : 정상삭제|401 : 로그인이 안됨,404 : 데이터가 없음|
 |회원 가입|POST|/api/v1/users/signup|요청 body : SignUpUserRequestDto|userResponseDto|201 : 회원가입 완료|400 : DTO 요청 문제 or 이미 가입된 회원|
-|로그인|POST|/api/v1/users/login|요청 body : LoginUserRequestDto|userResponseDto|200 : 정상 로그인|400 : DTO 요청 문제, 404 : 없는 회원|
+|로그인|POST|/api/v1/users/login|요청 body : LoginUserRequestDto|userResponseDto|200 : 정상 로그인|401 : 비밀번호 및 아이디 틀림, 404 : 없는 회원|
 |회원 조회|GET|/api/v1/users/{id}|요청 PathVariable : user_id|userResponseDto|200 : 정상 요청|401 : 권한 없음, 404 : 없는 회원|
-|회원 이름 수정|PATCH|/api/v1/users/{id}|요청 PathVariable : user_id, 요청 body : PatchUserRequestDto|userResponseDto|200 : 정상수정|400 : DTO 요청 문제, 401 : 로그인이 안됨, 404 : 데이터가 없음|
-|회원 삭제|DELETE|/api/v1/users/{id}|요청 PathVariable : user_id, 요청 body : deleteUserRequestDto|-|200 : 정상삭제|401 : 권한 없음, 404 : 없는 회원|
+|회원 이름 수정|PATCH|/api/v1/users/{id}|요청 body : PatchUserRequestDto, SessionAttribute : LoginAuthDto|userResponseDto|200 : 정상수정|400 : DTO 요청 문제, 401 : 로그인이 안됨, 404 : 데이터가 없음|
+|회원 삭제|DELETE|/api/v1/users/{id}|SessionAttribute : LoginAuthDto|-|200 : 정상삭제|401 : 권한 없음, 404 : 없는 회원|
+|댓글 작성|POST|/api/v1/comments|요청 Param : scheduleId, 요청 body : CommentRequestDto, SessionAttribute : LoginAuthDto|CommentResponseDto|201 : 정상 작성|403 : 권한 없음, 404 : 없는 회원, 없는 일정|
+|댓글 조회|GET|/api/v1/comments/{commentId}|요청 PathVariable : commentId|CommentResponseDto|200 : 정상 요청|404 : 없는 회원, 없는 일정|
+|댓글 목록 조회|GET|/api/v1/comments|-|List(CommentResponseDto)|200 : 정상 요청|-|
+|댓글 수정|PUT|/api/v1/comments/{commentId}|요청 PathVariable : commentId, 요청 body : CommentRequestDto, SessionAttribute : LoginAuthDto|CommentResponseDto|200 : 정상 요청|403 : 권한 없음, 404 : 없는 일정|
+|댓글 삭제|DELETE|/api/v1/comments/{commentId}|요청 PathVariable : commentId, SessionAttribute : LoginAuthDto|-|200 : 정상 요청|403 : 권한 없음, 404 : 없는 일정|
 
 ## 환경 변수
 
