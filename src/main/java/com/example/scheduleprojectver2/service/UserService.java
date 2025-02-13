@@ -6,6 +6,7 @@ import com.example.scheduleprojectver2.config.PasswordEncoder;
 import com.example.scheduleprojectver2.dto.users.LoginAuthDto;
 import com.example.scheduleprojectver2.dto.users.UserResponseDto;
 import com.example.scheduleprojectver2.entity.UserEntity;
+import com.example.scheduleprojectver2.exception.DuplicationException;
 import com.example.scheduleprojectver2.exception.ErrorDtoException;
 import com.example.scheduleprojectver2.exception.LoginException;
 
@@ -30,6 +31,10 @@ public class UserService {
 
     // 회원가입
     public UserResponseDto save(String username, String password, String email) {
+
+        if( userRepository.existsByEmail(email) ) {
+            throw new DuplicationException();
+        }
 
         String encodePassword = passwordEncoder.encode(password);
 

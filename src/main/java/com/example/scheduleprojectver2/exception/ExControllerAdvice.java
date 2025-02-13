@@ -18,12 +18,12 @@ public class ExControllerAdvice {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ErrorResult methodArgumentNotValidExHandle(MethodArgumentNotValidException e) {
+    public ErrorResult MethodArgumentNotValidExHandle(MethodArgumentNotValidException e) {
         return new ErrorResult(e.getMessage());
     }
 
     @ExceptionHandler(LoginException.class)
-    public ErrorResult loginExHandle(LoginException e) {
+    public ErrorResult LoginExHandle(LoginException e) {
         return new ErrorResult("아이디 혹은 비밀번호가 잘못되었습니다." + e);
     }
 
