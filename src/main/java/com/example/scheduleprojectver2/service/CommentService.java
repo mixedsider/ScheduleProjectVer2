@@ -85,6 +85,7 @@ public class CommentService {
     }
 
     // 댓글 삭제
+    @Transactional
     public void delete(Long commentId, Long userId) {
 
         UserEntity user = userService.findByIdToEntity(userId);

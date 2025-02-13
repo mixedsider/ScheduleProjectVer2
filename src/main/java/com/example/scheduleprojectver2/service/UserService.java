@@ -123,6 +123,7 @@ public class UserService {
 
 
     // 회원 탈퇴
+    @Transactional
     public void delete(Long id) {
         UserEntity deleteUser = userRepository.findByIdOrElseThrow(id);
 
