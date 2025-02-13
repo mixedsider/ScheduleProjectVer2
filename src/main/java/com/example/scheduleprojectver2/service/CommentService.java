@@ -5,6 +5,7 @@ import com.example.scheduleprojectver2.dto.comments.CommentResponseDto;
 import com.example.scheduleprojectver2.entity.CommentEntity;
 import com.example.scheduleprojectver2.entity.ScheduleEntity;
 import com.example.scheduleprojectver2.entity.UserEntity;
+import com.example.scheduleprojectver2.exception.ForbiddenException;
 import com.example.scheduleprojectver2.exception.NotFoundException;
 import com.example.scheduleprojectver2.repository.CommentRepository;
 import jakarta.validation.constraints.NotNull;
@@ -57,13 +58,20 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponseDto update(Long commentId, String contents) {
+    public CommentResponseDto update(Long commentId, Long userId, String contents) {
+
+        UserEntity user = userService.findByIdToEntity(userId);
 
         Optional<CommentEntity> findComment = commentRepository.findById(commentId);
 
         findComment.orElseThrow(
                 () -> new NotFoundException("해당 댓글은 없습니다.")
         );
+
+        // 권한이 없는 경우
+        if( user != findComment.get().getUser() ) {
+            throw new ForbiddenException();
+        }
 
         CommentEntity comment = findComment.get();
 
@@ -72,7 +80,20 @@ public class CommentService {
         return comment.toDto();
     }
 
-    public void delete(Long commentId) {
+    public void delete(Long commentId, Long userId) {
+
+        UserEntity user = userService.findByIdToEntity(userId);
+
+        CommentEntity findComment = commentRepository.findById(commentId)
+                .orElseThrow(
+                        () -> new NotFoundException("없는 댓글입니다.")
+                );
+
+        // 권한이 없는 경우
+        if( user != findComment.getUser() ) {
+            throw new ForbiddenException();
+        }
+
         commentRepository.deleteById(commentId);
     }
 }

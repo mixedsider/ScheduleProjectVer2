@@ -2,6 +2,7 @@ package com.example.scheduleprojectver2.controller;
 
 import com.example.scheduleprojectver2.dto.comments.CommentRequestDto;
 import com.example.scheduleprojectver2.dto.comments.CommentResponseDto;
+import com.example.scheduleprojectver2.dto.users.LoginAuthDto;
 import com.example.scheduleprojectver2.dto.users.UserResponseDto;
 import com.example.scheduleprojectver2.filter.Const;
 import com.example.scheduleprojectver2.service.CommentService;
@@ -29,7 +30,7 @@ public class CommentController {
     public ResponseEntity<CommentResponseDto> save(
             @RequestParam Long scheduleId,
             @Validated @RequestBody CommentRequestDto requestDto,
-            @SessionAttribute(Const.LOGIN_USER) UserResponseDto userDto
+            @SessionAttribute(Const.LOGIN_USER) LoginAuthDto userDto
     ) {
         CommentResponseDto responseDto = commentService.save(scheduleId, userDto.getId(), requestDto.getContents());
 
@@ -51,19 +52,21 @@ public class CommentController {
     @PutMapping("/{commentId}")
     public ResponseEntity<CommentResponseDto> updateContents(
             @RequestParam Long commentId,
-            @Validated @RequestBody CommentRequestDto requestDto
+            @Validated @RequestBody CommentRequestDto requestDto,
+            @SessionAttribute(Const.LOGIN_USER) LoginAuthDto userDto
     ) {
 
-        CommentResponseDto responseDto = commentService.update(commentId, requestDto.getContents());
+        CommentResponseDto responseDto = commentService.update(commentId, userDto.getId(), requestDto.getContents());
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> delete(
-            @PathVariable Long commentId
+            @PathVariable Long commentId,
+            @SessionAttribute(Const.LOGIN_USER) LoginAuthDto userDto
     ) {
-        commentService.delete(commentId);
+        commentService.delete(commentId, userDto.getId());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
