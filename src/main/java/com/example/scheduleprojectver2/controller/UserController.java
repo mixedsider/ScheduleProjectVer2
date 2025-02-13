@@ -30,11 +30,11 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponseDto> login(
+    public ResponseEntity<LoginAuthDto> login(
             @Validated @RequestBody LoginUserRequestDto requestDto,
             HttpServletRequest httpServletRequest
     ) {
-        UserResponseDto responseDto = userService.login(requestDto.getUsername(), requestDto.getPassword());
+        LoginAuthDto responseDto = userService.login(requestDto.getUsername(), requestDto.getPassword());
 
         HttpSession session = httpServletRequest.getSession();
 
@@ -57,31 +57,31 @@ public class UserController {
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("")
     public ResponseEntity<UserResponseDto> update(
-            @PathVariable Long id,
-            @Validated @RequestBody UpdateUserRequestDto requestDto
+            @Validated @RequestBody UpdateUserRequestDto requestDto,
+            @SessionAttribute(Const.LOGIN_USER) LoginAuthDto userDto
     ) {
-        UserResponseDto responseDto = userService.update(id, requestDto.getUsername(), requestDto.getEmail());
+        UserResponseDto responseDto = userService.update(userDto.getId(), requestDto.getUsername(), requestDto.getEmail());
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/")
     public ResponseEntity<UserResponseDto> patch(
-            @PathVariable Long id,
-            @RequestBody PatchUserRequestDto requestDto
+            @RequestBody PatchUserRequestDto requestDto,
+            @SessionAttribute(Const.LOGIN_USER) LoginAuthDto userDto
     ) {
-        UserResponseDto responseDto = userService.patch(id, requestDto.getUsername(), requestDto.getEmail());
+        UserResponseDto responseDto = userService.patch(userDto.getId(), requestDto.getUsername(), requestDto.getEmail());
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(
-            @PathVariable Long id
+            @SessionAttribute(Const.LOGIN_USER) LoginAuthDto userDto
     ) {
-        userService.delete(id);
+        userService.delete(userDto.getId());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

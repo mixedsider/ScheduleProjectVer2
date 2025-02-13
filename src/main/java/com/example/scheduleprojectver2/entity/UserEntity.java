@@ -33,7 +33,7 @@ public class UserEntity extends BaseEntity{
     }
 
     public UserResponseDto toDto() {
-        return new UserResponseDto(this.id, this.username);
+        return new UserResponseDto(this.id, this.username, this.email);
     }
 
     public void updateUsername(String username) {
