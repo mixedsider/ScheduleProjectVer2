@@ -51,7 +51,7 @@ public class CommentController {
 
     @PutMapping("/{commentId}")
     public ResponseEntity<CommentResponseDto> updateContents(
-            @RequestParam Long commentId,
+            @PathVariable Long commentId,
             @Validated @RequestBody CommentRequestDto requestDto,
             @SessionAttribute(Const.LOGIN_USER) LoginAuthDto userDto
     ) {
