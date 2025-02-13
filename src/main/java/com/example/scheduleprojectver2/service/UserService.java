@@ -1,10 +1,13 @@
 package com.example.scheduleprojectver2.service;
 
+
 import com.example.scheduleprojectver2.config.PasswordEncoder;
+
 import com.example.scheduleprojectver2.dto.users.UserResponseDto;
 import com.example.scheduleprojectver2.entity.UserEntity;
 import com.example.scheduleprojectver2.exception.ErrorDtoException;
 import com.example.scheduleprojectver2.exception.LoginException;
+
 import com.example.scheduleprojectver2.exception.NotFoundException;
 import com.example.scheduleprojectver2.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+
     private final PasswordEncoder passwordEncoder;
 
     public UserResponseDto save(String username, String password, String email) {
@@ -28,12 +32,14 @@ public class UserService {
 
         UserEntity user = new UserEntity(username, encodePassword, email);
 
+
         UserEntity savedUser = userRepository.save(user);
 
         return savedUser.toDto();
     }
 
     public UserResponseDto login(String username, String password) {
+
 
         UserEntity user1 = findByUsername(username);
 
@@ -43,6 +49,7 @@ public class UserService {
         }
 
         return user1.toDto();
+
     }
 
     public UserResponseDto findById(Long id) {
@@ -50,6 +57,7 @@ public class UserService {
 
         return findUser.toDto();
     }
+
 
     public UserEntity findByIdToEntity(Long id) {
         return userRepository.findById(id)
@@ -65,6 +73,7 @@ public class UserService {
                 () -> new NotFoundException("아이디 혹은 비밀번호를 잘못 입력 하셨습니다.")
         );
         return user.get();
+
     }
 
     public List<UserResponseDto> findAll() {
@@ -108,9 +117,4 @@ public class UserService {
 
         userRepository.delete(deleteUser);
     }
-
-    public boolean existById(Long id) {
-        return userRepository.existsById(id);
-    }
-
 }
