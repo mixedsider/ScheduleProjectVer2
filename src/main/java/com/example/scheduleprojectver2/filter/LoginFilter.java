@@ -1,5 +1,7 @@
 package com.example.scheduleprojectver2.filter;
 
+
+import com.example.scheduleprojectver2.dto.users.UserResponseDto;
 import com.example.scheduleprojectver2.exception.LoginException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,7 +42,7 @@ public class LoginFilter implements Filter {
     }
 
     private boolean isWhiteList(String requestUrl) {
-        boolean b = PatternMatchUtils.simpleMatch(WHITE_LIST, requestUrl);
-        return b;
+
+        return PatternMatchUtils.simpleMatch(WHITE_LIST, requestUrl);
     }
 }

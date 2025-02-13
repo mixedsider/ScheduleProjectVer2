@@ -6,12 +6,12 @@ import com.example.scheduleprojectver2.dto.schedules.ScheduleResponseDto;
 import com.example.scheduleprojectver2.dto.schedules.UpdateScheduleRequestDto;
 import com.example.scheduleprojectver2.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/schedules")
@@ -44,10 +44,19 @@ public class ScheduleController {
 
     // 일정 다건 조회
     // todo : pagination 추가
-    @GetMapping("")
-    public ResponseEntity<List<ScheduleResponseDto>> findAll() {
+    //    @GetMapping("")
+    //    public ResponseEntity<List<ScheduleResponseDto>> findAll() {
+    //
+    //        return new ResponseEntity<>(scheduleService.findAll(), HttpStatus.OK);
+    //    }
 
-        return new ResponseEntity<>(scheduleService.findAll(), HttpStatus.OK);
+    @GetMapping("")
+    public ResponseEntity<Page<ScheduleResponseDto>> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<ScheduleResponseDto> responseDtos = scheduleService.findAll(page, size);
+        return new ResponseEntity<>(responseDtos, HttpStatus.OK);
     }
 
     // 일정 일괄 수정

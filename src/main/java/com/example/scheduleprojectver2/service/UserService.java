@@ -1,9 +1,14 @@
 package com.example.scheduleprojectver2.service;
 
+
+import com.example.scheduleprojectver2.config.PasswordEncoder;
+
 import com.example.scheduleprojectver2.dto.users.UserResponseDto;
 import com.example.scheduleprojectver2.entity.UserEntity;
 import com.example.scheduleprojectver2.exception.ErrorDtoException;
 import com.example.scheduleprojectver2.exception.LoginException;
+
+import com.example.scheduleprojectver2.exception.NotFoundException;
 import com.example.scheduleprojectver2.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,9 +23,15 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+
+    private final PasswordEncoder passwordEncoder;
+
     public UserResponseDto save(String username, String password, String email) {
 
-        UserEntity user = new UserEntity(username, password, email);
+        String encodePassword = passwordEncoder.encode(password);
+
+        UserEntity user = new UserEntity(username, encodePassword, email);
+
 
         UserEntity savedUser = userRepository.save(user);
 
@@ -29,13 +40,16 @@ public class UserService {
 
     public UserResponseDto login(String username, String password) {
 
-        Optional<UserEntity> user = userRepository.findByUsernameAndPassword(username, password);
 
-        if( user.isEmpty() ) {
+        UserEntity user1 = findByUsername(username);
+
+
+        if( !passwordEncoder.matches(password, user1.getPassword()) ) {
             throw new LoginException();
         }
 
-        return user.get().toDto();
+        return user1.toDto();
+
     }
 
     public UserResponseDto findById(Long id) {
@@ -44,10 +58,22 @@ public class UserService {
         return findUser.toDto();
     }
 
-    public UserEntity findByName(String username) {
-        UserEntity findUser = userRepository.findByUsername(username);
 
-        return findUser;
+    public UserEntity findByIdToEntity(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(
+                        () -> new NotFoundException("없는 유저입니다.")
+                );
+    }
+
+    public UserEntity findByUsername(String username) {
+        Optional<UserEntity> user = userRepository.findByUsername(username);
+
+        user.orElseThrow(
+                () -> new NotFoundException("아이디 혹은 비밀번호를 잘못 입력 하셨습니다.")
+        );
+        return user.get();
+
     }
 
     public List<UserResponseDto> findAll() {

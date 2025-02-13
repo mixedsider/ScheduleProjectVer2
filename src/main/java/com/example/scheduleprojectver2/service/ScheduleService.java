@@ -2,15 +2,17 @@ package com.example.scheduleprojectver2.service;
 
 import com.example.scheduleprojectver2.dto.schedules.ScheduleResponseDto;
 import com.example.scheduleprojectver2.dto.users.UserResponseDto;
+
 import com.example.scheduleprojectver2.entity.ScheduleEntity;
 import com.example.scheduleprojectver2.entity.UserEntity;
 import com.example.scheduleprojectver2.exception.ErrorDtoException;
 import com.example.scheduleprojectver2.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +24,9 @@ public class ScheduleService {
 
     public ScheduleResponseDto save(String username, String title, String todo) {
         // todo : 유저 검사하는 로직
-        UserEntity findUser = userService.findByName(username);
+
+        UserEntity findUser = userService.findByUsername(username);
+
 
         ScheduleEntity schedule = new ScheduleEntity(title, todo);
         schedule.setUser(findUser);
@@ -39,11 +43,18 @@ public class ScheduleService {
         return findSchedule.toDto();
     }
 
-    public List<ScheduleResponseDto> findAll() {
-        return scheduleRepository.findAll()
-                .stream()
-                .map(ScheduleEntity::toDto)
-                .toList();
+
+    public ScheduleEntity findByIdToEntity(Long id) {
+        return scheduleRepository.findByIdOrElseThrow(id);
+    }
+
+    public Page<ScheduleResponseDto> findAll(int page, int size) {
+
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updateDate"));
+
+        return scheduleRepository.findAll(pageRequest)
+                .map(ScheduleEntity::toDto);
+
     }
 
     // 일괄 수정

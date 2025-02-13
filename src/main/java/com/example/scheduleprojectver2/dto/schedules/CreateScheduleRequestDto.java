@@ -17,7 +17,7 @@ public class CreateScheduleRequestDto {
     private final String username;
 
     @NotNull(message = "제목이 비어있습니다.")
-    @Size(min = 1, max = 30, message = "사이즈보다 큽니다.")
+    @Size(min = 1, max = 10, message = "사이즈보다 큽니다.")
     private final String title;
 
     @NotNull(message = "내용이 비어있습니다.")
