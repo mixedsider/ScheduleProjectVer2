@@ -28,6 +28,21 @@
 ![image](https://github.com/user-attachments/assets/055cb76d-7c14-427b-99fd-f704e5df05a9)
 
 
+### 테이블 구조
+
+
+#### comment
+
+![image](https://github.com/user-attachments/assets/c6e24b66-920c-4165-8efe-939a2445eed5)
+
+#### schedule
+
+![image](https://github.com/user-attachments/assets/2aa4ea06-f00d-4dcb-96a5-f9f498b885ea)
+
+#### user
+
+![image](https://github.com/user-attachments/assets/8a9a858b-c35d-407e-95bf-4c0c2423dd07)
+
 ### 사이트 주소
 
     https://www.erdcloud.com/d/uQZCe5DyjBWHc5wqg
