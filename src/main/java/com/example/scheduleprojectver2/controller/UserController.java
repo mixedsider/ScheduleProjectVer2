@@ -35,13 +35,26 @@ public class UserController {
             HttpServletRequest httpServletRequest
     ) {
         // 회원 조회
-        LoginAuthDto responseDto = userService.login(requestDto.getUsername(), requestDto.getPassword());
+        LoginAuthDto responseDto = userService.login(requestDto.getEmail(), requestDto.getPassword());
 
         // 세선 생성 후 전달
         HttpSession session = httpServletRequest.getSession();
         session.setAttribute(Const.LOGIN_USER, responseDto);
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(
+            HttpServletRequest httpServletRequest
+    ) {
+        HttpSession session = httpServletRequest.getSession(false);
+        // 세션이 존재하면 -> 로그인이 된 경우
+        if(session != null) {
+            session.invalidate(); // 해당 세션(데이터)을 삭제한다.
+        }
+
+        return ResponseEntity.ok("success");
     }
 
     // 회원 단건 조회

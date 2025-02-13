@@ -41,17 +41,17 @@ public class UserService {
     }
 
     // 로그인
-    public LoginAuthDto login(String username, String password) {
+    public LoginAuthDto login(String email, String password) {
 
 
-        UserEntity user = findByUsername(username);
+        UserEntity user = findByEmail(email);
 
         // 암호화 비밀번호와 비교
         if( !passwordEncoder.matches(password, user.getPassword()) ) {
             throw new LoginException();
         }
 
-        return new LoginAuthDto(user.getId(), username); // 로그인용 DTO
+        return new LoginAuthDto(user.getId(), email); // 로그인용 DTO
 
     }
 
@@ -69,6 +69,10 @@ public class UserService {
                 .orElseThrow(
                         () -> new NotFoundException("없는 유저입니다.")
                 );
+    }
+
+    public UserEntity findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     // 이름으로 회원조회

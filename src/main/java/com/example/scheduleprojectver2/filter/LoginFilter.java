@@ -1,7 +1,6 @@
 package com.example.scheduleprojectver2.filter;
 
 
-import com.example.scheduleprojectver2.dto.users.UserResponseDto;
 import com.example.scheduleprojectver2.exception.LoginException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

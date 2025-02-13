@@ -8,12 +8,12 @@ public class LoginAuthDto { // 로그인 인증용 DTO
 
     private Long id;
 
-    private String username;
+    private String email;
 
 
     @Builder
-    public LoginAuthDto(Long id, String username) {
+    public LoginAuthDto(Long id, String email) {
         this.id = id;
-        this.username = username;
+        this.email = email;
     }
 }
