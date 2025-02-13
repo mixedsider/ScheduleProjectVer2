@@ -5,7 +5,6 @@ import com.example.scheduleprojectver2.dto.users.LoginAuthDto;
 import com.example.scheduleprojectver2.filter.Const;
 import com.example.scheduleprojectver2.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,13 +42,6 @@ public class ScheduleController {
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
-
-
-    //    @GetMapping("")
-    //    public ResponseEntity<List<ScheduleResponseDto>> findAll() {
-    //
-    //        return new ResponseEntity<>(scheduleService.findAll(), HttpStatus.OK);
-    //    }
 
     // 일정 다건 조회
     @GetMapping("")

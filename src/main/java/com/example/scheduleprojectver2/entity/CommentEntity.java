@@ -33,6 +33,7 @@ public class CommentEntity extends BaseEntity {
         this.contents = contents;
     }
 
+    // DTO 로 변환
     public CommentResponseDto toDto() {
         return CommentResponseDto.builder()
                 .id(this.id)

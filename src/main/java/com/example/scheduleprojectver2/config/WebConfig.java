@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     @Bean
-    public FilterRegistrationBean<Filter> loginFilter() {
+    public FilterRegistrationBean<Filter> loginFilter() { // 로그인 필터 1순위
         FilterRegistrationBean<Filter> filterFilterRegistrationBean = new FilterRegistrationBean<>();
 
         filterFilterRegistrationBean.setFilter(new LoginFilter());

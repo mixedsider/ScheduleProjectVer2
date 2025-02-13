@@ -3,14 +3,8 @@ package com.example.scheduleprojectver2.controller;
 import com.example.scheduleprojectver2.dto.comments.CommentRequestDto;
 import com.example.scheduleprojectver2.dto.comments.CommentResponseDto;
 import com.example.scheduleprojectver2.dto.users.LoginAuthDto;
-import com.example.scheduleprojectver2.dto.users.UserResponseDto;
 import com.example.scheduleprojectver2.filter.Const;
 import com.example.scheduleprojectver2.service.CommentService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +20,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
+    // 댓글 저장
     @PostMapping("")
     public ResponseEntity<CommentResponseDto> save(
             @RequestParam Long scheduleId,
@@ -37,6 +32,7 @@ public class CommentController {
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
+    // 댓글 단건 조회
     @GetMapping("/{commentId}")
     public ResponseEntity<CommentResponseDto> findById(
             @PathVariable Long commentId
@@ -44,11 +40,13 @@ public class CommentController {
         return new ResponseEntity<>(commentService.findById(commentId), HttpStatus.OK);
     }
 
+    // 댓글 다건 조회
     @GetMapping("")
     public ResponseEntity<List<CommentResponseDto>> findAll() {
         return new ResponseEntity<>(commentService.findAll(), HttpStatus.OK);
     }
 
+    // 댓글 수정
     @PutMapping("/{commentId}")
     public ResponseEntity<CommentResponseDto> updateContents(
             @PathVariable Long commentId,
@@ -61,6 +59,7 @@ public class CommentController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    // 댓글 삭제
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> delete(
             @PathVariable Long commentId,

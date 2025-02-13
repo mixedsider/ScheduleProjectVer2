@@ -23,21 +23,18 @@ public class LoginFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
 
-        String requestUri = httpRequest.getRequestURI();
+        String requestUri = httpRequest.getRequestURI(); // 들어온 URI
 
-        log.info("로그인 필터");
-
-        if( !isWhiteList(requestUri) ) {
+        if( !isWhiteList(requestUri) ) { // 화이트 리스트에 속하지 않은 경우
 
             HttpSession session = httpRequest.getSession(false);
 
-            if( session == null || session.getAttribute(Const.LOGIN_USER) == null) {
+            if( session == null || session.getAttribute(Const.LOGIN_USER) == null) { // 로그인이 되어있어야됨
                 throw new LoginException();
             }
 
         }
 
-        log.info("로그인 필터 통과");
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

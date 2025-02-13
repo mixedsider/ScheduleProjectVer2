@@ -11,6 +11,7 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
     Integer countBySchedule_Id(Long scheduleId);
 
+
     @Query("SELECT new com.example.scheduleprojectver2.dto.comments.ScheduleInCommentDto(c.user.username, c.contents) " +
             "FROM CommentEntity c " +
             "WHERE c.schedule.id = :scheduleId")

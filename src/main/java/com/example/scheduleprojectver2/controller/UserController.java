@@ -1,14 +1,12 @@
 package com.example.scheduleprojectver2.controller;
 
 import com.example.scheduleprojectver2.dto.users.*;
-import com.example.scheduleprojectver2.exception.LoginException;
 import com.example.scheduleprojectver2.filter.Const;
 import com.example.scheduleprojectver2.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +20,7 @@ public class UserController {
 
     private final UserService userService;
 
+    // 회원가입
     @PostMapping("/signup")
     public ResponseEntity<UserResponseDto> signUp(@Validated @RequestBody SignUpUserRequestDto requestDto) {
         UserResponseDto responseDto = userService.save(requestDto.getUsername(), requestDto.getPassword(), requestDto.getEmail());
@@ -29,20 +28,23 @@ public class UserController {
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
+    // 로그인
     @PostMapping("/login")
     public ResponseEntity<LoginAuthDto> login(
             @Validated @RequestBody LoginUserRequestDto requestDto,
             HttpServletRequest httpServletRequest
     ) {
+        // 회원 조회
         LoginAuthDto responseDto = userService.login(requestDto.getUsername(), requestDto.getPassword());
 
+        // 세선 생성 후 전달
         HttpSession session = httpServletRequest.getSession();
-
         session.setAttribute(Const.LOGIN_USER, responseDto);
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    // 회원 단건 조회
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> findById(@PathVariable Long id) {
         UserResponseDto responseDto = userService.findById(id);
@@ -50,6 +52,7 @@ public class UserController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    // 회원 목록 조회
     @GetMapping("")
     public ResponseEntity<List<UserResponseDto>> findAll() {
         List<UserResponseDto> userList = userService.findAll();
@@ -57,6 +60,7 @@ public class UserController {
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
+    // 회원 정보 수정 ( 전체 )
     @PutMapping("")
     public ResponseEntity<UserResponseDto> update(
             @Validated @RequestBody UpdateUserRequestDto requestDto,
@@ -67,6 +71,7 @@ public class UserController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    // 회원 정보 수정 ( 일부 )
     @PatchMapping("")
     public ResponseEntity<UserResponseDto> patch(
             @RequestBody PatchUserRequestDto requestDto,
@@ -77,6 +82,7 @@ public class UserController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    // 회원 탈퇴
     @DeleteMapping("")
     public ResponseEntity<Void> delete(
             @SessionAttribute(Const.LOGIN_USER) LoginAuthDto userDto

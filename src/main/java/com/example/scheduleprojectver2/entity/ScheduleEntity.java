@@ -43,6 +43,7 @@ public class ScheduleEntity extends BaseEntity {
         this.todo = todo;
     }
 
+    // DTO 로 변환
     public ScheduleResponseDto toDto() {
         return new ScheduleResponseDto(this.id, this.user.getUsername(), this.title, this.todo);
     }

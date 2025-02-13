@@ -31,18 +31,21 @@ public class ScheduleService {
 
     private final UserService userService;
 
+
+    // 일정 저장
     public ScheduleResponseDto save(Long userId, String title, String todo) {
         // todo : 유저 검사하는 로직
 
         UserEntity findUser = userService.findByIdToEntity(userId);
 
-        ScheduleEntity schedule = new ScheduleEntity(findUser, title, todo);
+        ScheduleEntity schedule = new ScheduleEntity(findUser, title, todo); // 연관관계 user
 
         ScheduleEntity savedSchedule = scheduleRepository.save(schedule);
 
         return savedSchedule.toDto();
     }
 
+    // 단건 조회
     public ScheduleResponseDto findById(Long id) {
 
         ScheduleEntity findSchedule = scheduleRepository.findByIdOrElseThrow(id);
@@ -57,10 +60,13 @@ public class ScheduleService {
     }
 
 
+    // 단건 조회 엔티티 리턴
+    // Service에서는 무조건 dto만 리턴 해야되는지
     public ScheduleEntity findByIdToEntity(Long id) {
         return scheduleRepository.findByIdOrElseThrow(id);
     }
 
+    // 다건 조회 Pagination
     public Page<SchedulePageReponseDto> findAll(int page, int size) {
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updateDate"));
@@ -76,7 +82,7 @@ public class ScheduleService {
 
     }
 
-    // 일괄 수정
+    // 일정 일괄 수정
     @Transactional
     public ScheduleResponseDto update(Long id, Long userId, String title, String todo) {
 
@@ -111,9 +117,11 @@ public class ScheduleService {
             throw new ForbiddenException();
         }
 
+        // 제목만 있는 경우
         if( !title.isEmpty() ) {
             findSchedule.updateTitle(title);
         }
+        // 할일만 있는 경우
         if( !todo.isEmpty() ) {
             findSchedule.updateTodo(todo);
         }

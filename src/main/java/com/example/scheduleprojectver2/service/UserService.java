@@ -24,8 +24,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    // 비밀번호 암호화
     private final PasswordEncoder passwordEncoder;
 
+
+    // 회원가입
     public UserResponseDto save(String username, String password, String email) {
 
         String encodePassword = passwordEncoder.encode(password);
@@ -37,20 +40,22 @@ public class UserService {
         return savedUser.toDto();
     }
 
+    // 로그인
     public LoginAuthDto login(String username, String password) {
 
 
         UserEntity user = findByUsername(username);
 
-
+        // 암호화 비밀번호와 비교
         if( !passwordEncoder.matches(password, user.getPassword()) ) {
             throw new LoginException();
         }
 
-        return new LoginAuthDto(user.getId(), username);
+        return new LoginAuthDto(user.getId(), username); // 로그인용 DTO
 
     }
 
+    // 회원조회
     public UserResponseDto findById(Long id) {
         UserEntity findUser = userRepository.findByIdOrElseThrow(id);
 
@@ -58,6 +63,7 @@ public class UserService {
     }
 
 
+    // 회원조회 리턴값 Entity
     public UserEntity findByIdToEntity(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(
@@ -65,6 +71,7 @@ public class UserService {
                 );
     }
 
+    // 이름으로 회원조회
     public UserEntity findByUsername(String username) {
         Optional<UserEntity> user = userRepository.findByUsername(username);
 
@@ -75,6 +82,7 @@ public class UserService {
 
     }
 
+    // 모든 회원 조회
     public List<UserResponseDto> findAll() {
         return userRepository.findAll()
                 .stream()
@@ -82,6 +90,7 @@ public class UserService {
                 .toList();
     }
 
+    // 회원 정보 수정
     @Transactional
     public UserResponseDto update(Long id, String username, String email) {
         UserEntity findUser = userRepository.findByIdOrElseThrow(id);
@@ -92,9 +101,10 @@ public class UserService {
         return findUser.toDto();
     }
 
+    // 회원 정보 부분 수정
     @Transactional
     public UserResponseDto patch(Long id, String username, String email) {
-        if ((username.isEmpty() && email.isEmpty()) || (!username.isEmpty() && !email.isEmpty())) {
+        if ((username.isEmpty() && email.isEmpty()) || (!username.isEmpty() && !email.isEmpty())) { // 모두 있거나, 모두 없거나
             throw new ErrorDtoException("잘못된 입력입니다.");
         }
 
@@ -111,15 +121,11 @@ public class UserService {
         return findUser.toDto();
     }
 
+
+    // 회원 탈퇴
     public void delete(Long id) {
         UserEntity deleteUser = userRepository.findByIdOrElseThrow(id);
 
         userRepository.delete(deleteUser);
-    }
-
-    public void checkUserId(Long id) {
-        if( !userRepository.existsById(id) ) {
-            throw new NotFoundException("없는 유저입니다.");
-        }
     }
 }

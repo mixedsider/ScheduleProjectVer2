@@ -27,6 +27,7 @@ public class CommentService {
 
     private final ScheduleService scheduleService;
 
+    // 댓글 저장 서비스
     public CommentResponseDto save(Long scheduleId, Long userId, String comments) {
 
         CommentEntity comment = new CommentEntity(comments);
@@ -35,6 +36,7 @@ public class CommentService {
 
         UserEntity user = userService.findByIdToEntity(userId);
 
+        // 연관관계 설정
         comment.setSchedule(schedule);
         comment.setUser(user);
 
@@ -42,6 +44,7 @@ public class CommentService {
 
         return savedComment.toDto();
     }
+
 
     public CommentResponseDto findById(Long id) {
         return commentRepository.findById(id)
@@ -57,6 +60,7 @@ public class CommentService {
                 .toList();
     }
 
+    // 댓글 내용 수정
     @Transactional
     public CommentResponseDto update(Long commentId, Long userId, String contents) {
 
@@ -80,6 +84,7 @@ public class CommentService {
         return comment.toDto();
     }
 
+    // 댓글 삭제
     public void delete(Long commentId, Long userId) {
 
         UserEntity user = userService.findByIdToEntity(userId);

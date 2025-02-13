@@ -43,6 +43,7 @@ public class UserEntity extends BaseEntity{
         this.comments = new ArrayList<>();
     }
 
+    // DTO 로 변환
     public UserResponseDto toDto() {
         return new UserResponseDto(this.id, this.username, this.email);
     }

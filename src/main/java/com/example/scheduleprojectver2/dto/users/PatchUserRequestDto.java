@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class PatchUserRequestDto {
+    // 부분 수정용 Dto
 
     private String username;
 
