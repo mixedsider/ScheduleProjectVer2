@@ -24,7 +24,6 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-
     private final PasswordEncoder passwordEncoder;
 
     public UserResponseDto save(String username, String password, String email) {
@@ -32,7 +31,6 @@ public class UserService {
         String encodePassword = passwordEncoder.encode(password);
 
         UserEntity user = new UserEntity(username, encodePassword, email);
-
 
         UserEntity savedUser = userRepository.save(user);
 

@@ -2,10 +2,15 @@ package com.example.scheduleprojectver2.entity;
 
 import com.example.scheduleprojectver2.dto.schedules.CreateScheduleRequestDto;
 import com.example.scheduleprojectver2.dto.schedules.ScheduleResponseDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.xml.stream.events.Comment;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -28,13 +33,14 @@ public class ScheduleEntity extends BaseEntity {
     @Column(nullable = false)
     private String todo;
 
-    public ScheduleEntity(String title, String todo) {
+    @Setter
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CommentEntity> comments;
+
+    public ScheduleEntity(UserEntity user, String title, String todo) {
+        this.user = user;
         this.title = title;
         this.todo = todo;
-    }
-
-    public static ScheduleEntity toEntity(CreateScheduleRequestDto dto) {
-        return new ScheduleEntity(dto.getTitle(), dto.getTodo());
     }
 
     public ScheduleResponseDto toDto() {
