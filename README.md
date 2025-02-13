@@ -6,6 +6,8 @@
 
 - Java 17.0.11
 
+- Spring boot 3.4.2
+
 - Github
 
 - Docker version 27.5.1, build 9f9e405
