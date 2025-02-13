@@ -27,7 +27,7 @@ public class ScheduleController {
             ) {
 
         ScheduleResponseDto responseDto = scheduleService.save(
-                userDto.getUsername(),
+                userDto.getId(),
                 requestDto.getTitle(),
                 requestDto.getTodo()
         );

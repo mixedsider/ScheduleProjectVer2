@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Table(name = "user")
@@ -26,10 +29,18 @@ public class UserEntity extends BaseEntity{
     @Column(nullable = false, unique = true)
     private String email;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<ScheduleEntity> schedules;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CommentEntity> comments;
+
     public UserEntity(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.schedules = new ArrayList<>();
+        this.comments = new ArrayList<>();
     }
 
     public UserResponseDto toDto() {

@@ -16,4 +16,6 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
             "WHERE c.schedule.id = :scheduleId")
     List<ScheduleInCommentDto> findCommentsByScheduleId(@Param("scheduleId") Long scheduleId);
 
+
+    void deleteBySchedule_Id(Long scheduleId);
 }
