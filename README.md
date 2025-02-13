@@ -25,7 +25,7 @@
 
 ### ERD
 
-![image](https://github.com/user-attachments/assets/e685cb67-edf5-4bd5-8afc-49168056659e)
+![image](https://github.com/user-attachments/assets/055cb76d-7c14-427b-99fd-f704e5df05a9)
 
 
 ### 사이트 주소
