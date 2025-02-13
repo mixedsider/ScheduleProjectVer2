@@ -29,13 +29,9 @@ public class CommentController {
     public ResponseEntity<CommentResponseDto> save(
             @RequestParam Long scheduleId,
             @Validated @RequestBody CommentRequestDto requestDto,
-            HttpServletRequest httpservletRequest
+            @SessionAttribute(Const.LOGIN_USER) UserResponseDto userDto
     ) {
-        HttpSession session = httpservletRequest.getSession(false);
-
-        UserResponseDto user = (UserResponseDto) session.getAttribute(Const.LOGIN_USER);
-
-        CommentResponseDto responseDto = commentService.save(scheduleId, user.getId(), requestDto.getContents());
+        CommentResponseDto responseDto = commentService.save(scheduleId, userDto.getId(), requestDto.getContents());
 
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }

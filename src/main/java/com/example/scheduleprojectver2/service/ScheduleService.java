@@ -6,10 +6,11 @@ import com.example.scheduleprojectver2.entity.UserEntity;
 import com.example.scheduleprojectver2.exception.ErrorDtoException;
 import com.example.scheduleprojectver2.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -42,11 +43,12 @@ public class ScheduleService {
         return scheduleRepository.findByIdOrElseThrow(id);
     }
 
-    public List<ScheduleResponseDto> findAll() {
-        return scheduleRepository.findAll()
-                .stream()
-                .map(ScheduleEntity::toDto)
-                .toList();
+    public Page<ScheduleResponseDto> findAll(int page, int size) {
+
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updateDate"));
+
+        return scheduleRepository.findAll(pageRequest)
+                .map(ScheduleEntity::toDto);
     }
 
     // 일괄 수정

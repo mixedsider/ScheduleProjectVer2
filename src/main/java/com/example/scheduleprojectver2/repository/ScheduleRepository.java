@@ -2,6 +2,8 @@ package com.example.scheduleprojectver2.repository;
 
 import com.example.scheduleprojectver2.entity.ScheduleEntity;
 import com.example.scheduleprojectver2.exception.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ScheduleRepository extends JpaRepository<ScheduleEntity, Long> {
@@ -11,4 +13,6 @@ public interface ScheduleRepository extends JpaRepository<ScheduleEntity, Long> 
                 () -> new NotFoundException("없는 데이터입니다.")
         );
     }
+
+    Page<ScheduleEntity> findAll(Pageable pageable);
 }
