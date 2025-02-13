@@ -67,7 +67,7 @@ public class UserController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @PatchMapping("/")
+    @PatchMapping("")
     public ResponseEntity<UserResponseDto> patch(
             @RequestBody PatchUserRequestDto requestDto,
             @SessionAttribute(Const.LOGIN_USER) LoginAuthDto userDto
@@ -77,7 +77,7 @@ public class UserController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("")
     public ResponseEntity<Void> delete(
             @SessionAttribute(Const.LOGIN_USER) LoginAuthDto userDto
     ) {

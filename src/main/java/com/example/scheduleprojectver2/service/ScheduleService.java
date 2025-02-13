@@ -31,14 +31,12 @@ public class ScheduleService {
 
     private final UserService userService;
 
-    public ScheduleResponseDto save(String username, String title, String todo) {
+    public ScheduleResponseDto save(Long userId, String title, String todo) {
         // todo : 유저 검사하는 로직
 
-        UserEntity findUser = userService.findByUsername(username);
+        UserEntity findUser = userService.findByIdToEntity(userId);
 
-
-        ScheduleEntity schedule = new ScheduleEntity(title, todo);
-        schedule.setUser(findUser);
+        ScheduleEntity schedule = new ScheduleEntity(findUser, title, todo);
 
         ScheduleEntity savedSchedule = scheduleRepository.save(schedule);
 
