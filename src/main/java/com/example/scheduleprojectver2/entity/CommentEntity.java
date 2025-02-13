@@ -2,6 +2,7 @@ package com.example.scheduleprojectver2.entity;
 
 import com.example.scheduleprojectver2.dto.comments.CommentResponseDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +28,7 @@ public class CommentEntity extends BaseEntity {
     private ScheduleEntity schedule;
 
     @Column(nullable = false)
+    @Size(min = 1, max = 30)
     private String contents;
 
     public CommentEntity(String contents) {
