@@ -98,9 +98,16 @@ public class UserController {
     // 회원 탈퇴
     @DeleteMapping("")
     public ResponseEntity<Void> delete(
-            @SessionAttribute(Const.LOGIN_USER) LoginAuthDto userDto
+            @SessionAttribute(Const.LOGIN_USER) LoginAuthDto userDto,
+            HttpServletRequest httpServletRequest
     ) {
         userService.delete(userDto.getId());
+
+        HttpSession session = httpServletRequest.getSession(false);
+        // 세션이 존재하면 -> 로그인이 된 경우
+        if(session != null) {
+            session.invalidate(); // 해당 세션(데이터)을 삭제한다.
+        }
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
